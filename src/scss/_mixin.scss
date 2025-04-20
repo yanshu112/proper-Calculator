@@ -1,0 +1,332 @@
+@property --angle {
+	syntax: '<angle>';
+	initial-value: 0deg;
+	inherits: false;
+}
+@property --stretch {
+	syntax: '<number>';
+	initial-value: 0;
+	inherits: false;
+}
+@property --distance {
+	syntax: '<percentage>';
+	initial-value: 0%;
+	inherits: false;
+}
+
+@-webkit-keyframes rotate-angle {
+	from {--angle: 0deg;}
+	to {--angle: 360deg;}
+}
+@keyframes rotate-angle {
+	from {--angle: 0deg;}
+	to {--angle: 360deg;}
+}
+
+
+@-webkit-keyframes stretch-bg {
+	0%,100% {--stretch: 0;}
+	50% {--stretch: 1;}
+}
+@keyframes stretch-bg {
+	0%,100% {--stretch: 0;}
+	50% {--stretch: 1;}
+}
+
+@-webkit-keyframes move-forward {
+  from {--distance: 0;}
+	to {--distance: 100;}
+}
+@keyframes move-forward {
+	from {--distance: 0%;}
+	to {--distance: 100%;}
+}
+
+
+@mixin animation($animation) {
+  -webkit-animation: $animation;
+       -o-animation: $animation;
+          animation: $animation;
+}
+
+@mixin nostyle-block{
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+@mixin display-block($w:100%,$m:0,$p:0){
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+
+@mixin flex-row{
+	position: relative;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+@mixin flex-column{
+	position: relative;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+
+	-webkit-box-pack: start;
+	-ms-flex-pack: start;
+	 justify-content: flex-start;
+
+	-webkit-box-align: start;
+	-ms-flex-align: start;
+	align-items: flex-start;
+	width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+@mixin justify-start{
+	-webkit-box-pack: start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+}
+@mixin justify-end{
+	-webkit-box-pack: end;
+	-ms-flex-pack: end;
+	justify-content: flex-end;
+}
+@mixin justify-space-between{
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+}
+@mixin space-evenly{
+	 -webkit-box-pack:space-evenly;
+	 -ms-flex-pack:space-evenly;
+	 justify-content:space-evenly;
+}
+@mixin justify-center{
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+}
+
+@mixin align-start{
+	-webkit-box-align: start;
+	-ms-flex-align: start;
+	align-items: flex-start;
+}
+@mixin align-center{
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+
+@mixin user-select-none{
+	-webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+@mixin ellipsis-text{
+	overflow: hidden;
+	white-space: nowrap;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
+}
+
+
+@mixin gradient-striped($c1:#ffffa2,$c2: #adf8fc,$s:50px, $deg: 135deg) {
+	background: $c2;
+  background-image: -webkit-linear-gradient($deg, $c1 25%, transparent 25%, transparent 50%, $c1 50%, $c1 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient($deg, $c1 25%, transparent 25%, transparent 50%, $c1 50%, $c1 75%, transparent 75%, transparent);
+  background-image: linear-gradient($deg, $c1 25%, transparent 25%, transparent 50%, $c1 50%, $c1 75%, transparent 75%, transparent);
+	background-size: $s $s;
+}
+
+@mixin gradient-striped2($c1:#ffffa2,$c2: #adf8fc,$s:50px, $deg: 135deg) {
+	@include gradient-striped($c1,$c2,$s,$deg);
+	@keyframes pbs {from{ background-position: 0 0;}to{background-position: $s 0;}}
+	@-webkit-keyframes pbs {from{ background-position: $s 0;}to{background-position: 0 0;}}
+	@include animation(pbs 2s linear infinite);
+}
+
+
+
+@mixin rotate-color($c1:#ffffa2,$c2: #adf8fc){
+	@supports (--angle:90deg){
+		background-image: -webkit-gradient(linear, left top, left bottom, from(var(--angle)), color-stop($c1), to($c2));
+		background-image: -webkit-linear-gradient(var(--angle), $c1 50%, $c2) ;
+		background-image: -o-linear-gradient(var(--angle), $c1,$c2) ;
+		background-image: linear-gradient(var(--angle), $c1, $c2);
+		@include animation(rotate-angle 6s linear infinite);
+	}
+}
+@mixin stretch-color($c1:#ffffa2,$c2: #adf8fc,$deg:135deg){
+	@supports (--stretch:0.5){
+		background-image: -o-linear-gradient($deg, $c1 0%,$c2 calc(var(--stretch) * 100%), $c1 100%);
+		background-image: linear-gradient($deg, $c1 0%,$c2 calc(var(--stretch) * 100%), $c1 100%);
+		@include animation(stretch-bg 4s ease-in-out infinite);
+	}
+}
+
+@mixin traverse-color($c1:#ffffa2,$c2: #adf8fc,$deg:135deg){
+	@supports (--distance:50){
+		background-image: -webkit-gradient(linear,left top, right top,from($c1),color-stop($c2),color-stop($c2),to($c1));
+		background-image: -o-linear-gradient(left,$c1 var(--distance),$c2 calc(var(--distance) + 5%),$c2 calc(var(--distance) + 25%),$c1 calc(var(--distance) + 30%));
+		background-image: linear-gradient($deg,$c1 var(--distance),$c2 calc(var(--distance) + 5%),$c2 calc(var(--distance) + 25%),$c1 calc(var(--distance) + 30%));
+		background-image: linear-gradient($deg,$c1 var(--distance),$c2 calc(var(--distance) + 5%),$c2 calc(var(--distance) + 25%),$c1 calc(var(--distance) + 30%));
+		@include animation(move-forward 3s linear infinite normal);
+	}
+}
+
+
+@mixin gradient-bg($c1:#ffffa2,$c2: #adf8fc,$deg:135deg){
+	background: $c1;
+	background-image: -webkit-gradient(linear, left top, left bottom, from($deg), color-stop(50%, $c1), to($c2)) ;
+	background-image: -o-linear-gradient($deg, $c1 50%, $c2) ;
+	background-image: linear-gradient($deg,$c1, $c2);
+}
+
+@mixin gradient-bg2($c1:#ffffa2,$c2: #adf8fc,$deg:135deg){
+	@include gradient-bg($c1,$c2);
+	@include rotate-color($c1,$c2);
+}
+
+@mixin gradient-bg3($c1:#555,$c2: #888){
+	background: $c1;
+	background-image: linear-gradient(135deg,$c1, $c2);
+	@include traverse-color($c1,$c2,90deg)
+}
+@mixin gradient-bg4($c1:#222227,$c2: #323239){
+	background: $c1;
+	background-image: linear-gradient(135deg, $c1,$c2) ;
+	@include stretch-color($c1,$c2,135deg)
+}
+
+@mixin gradient-text($c1:#ffffa2,$c2:#adf8fc,$deg:135deg){
+
+  color: $c1;
+	-webkit-text-fill-color: transparent;
+	-webkit-background-clip: text !important;
+	background-clip: text !important;
+
+	background: $c1;
+	background-image: linear-gradient($deg,$c1, $c2);
+
+	@include user-select-none;
+}
+@mixin gradient-text2($c1:#ffffa2,$c2: #adf8fc,$deg:135deg){
+	@include gradient-text($c1,$c2);
+	@include rotate-color($c1,$c2);
+}
+@mixin gradient-text3($c1:#ffffa2,$c2: #adf8fc,$deg:135deg){
+	@include gradient-text($c1,$c2);
+	@include traverse-color($c1,$c2,135deg);
+}
+@mixin gradient-text4($c1:#ffffa2,$c2: #adf8fc,$deg:135deg){
+	@include gradient-text($c1,$c2);
+	@include stretch-color($c1,$c2,135deg);
+}
+
+
+
+@mixin external-margin($h : 10px,$w : 10px){
+  margin: $h $w;
+  width: calc(100% - 2*$w);
+  height: calc(100% - 2*$h);
+}
+
+
+
+
+@mixin scroll-bar($w:4px,$m1:0px,$m2:0px){
+	-webkit-overflow-scrolling: touch;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+	scroll-behavior: smooth;
+	 &::-webkit-scrollbar {
+		width: $w;
+	}
+	&::-webkit-scrollbar-track {
+		box-shadow: inset 0 0 6px rgba(0, 0, 0, .9);
+		margin: $m1 0 $m2;
+		border-radius: 10px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: #606063;
+		border-radius: 10px;
+		&:hover {
+		  background: #79797B;
+		}
+	}
+}
+
+@mixin scroll-bar2($w:4px,$d:0px){
+	@include scroll-bar($w,$d);
+	 &::-webkit-scrollbar {
+		background: transparent;
+	}
+}
+
+@mixin scroll-bar3($h:4px){
+
+	-webkit-overflow-scrolling: touch;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+	 &::-webkit-scrollbar {
+		height: $h;
+		background: #444;
+		padding-bottom: 10px;
+		display: block;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: #32CCBC;
+	}
+}
+
+@mixin psuedo-bg($w:2px,$r:8px,$c:#383050){
+	&:before{
+		position: absolute;
+		display: block;
+		content: '';
+		background: $c;
+		top: $w;
+		left: $w;
+		right: $w;
+		bottom: $w;
+		border-radius: $r;
+		z-index: 0;
+	}
+
+}
